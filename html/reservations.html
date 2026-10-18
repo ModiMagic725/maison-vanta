@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reservations — MAISON VANTA</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;1,500&family=DM+Sans:wght@400;500&family=DM+Mono&display=swap" rel="stylesheet"><link rel="stylesheet" href="../css/styles.css"></head>
+<body data-root="../"><main class="page" style="padding:16vh 5vw 10vh"><span class="label">Reservations</span><h1>Request a table</h1>
+<p class="demo" role="note">Reservation demonstration only. No real table has been booked.</p>
+<form id="f" novalidate>
+<label>Date<input type="date" name="date" required><span class="err" role="alert"></span></label>
+<div><span class="label">Time</span><div class="slots" role="group" aria-label="Time"></div><input type="hidden" name="time"><span class="err" role="alert"></span></div>
+<label>Guests<select name="guests" required><option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select><span class="err" role="alert"></span></label>
+<label>Experience<select name="exp"><option>Chef's Tasting</option><option>Seasonal Dining</option><option>Chef's Counter</option><option>Wine Pairing</option></select></label>
+<label>Name<input name="name" autocomplete="name" required><span class="err" role="alert"></span></label>
+<label>Email<input type="email" name="email" autocomplete="email" required><span class="err" role="alert"></span></label>
+<label>Dietary notes (optional)<textarea name="diet" rows="2"></textarea></label>
+<button class="btn fill" style="cursor:pointer;color:inherit">Submit demo request</button></form>
+<div class="ok" id="ok" hidden tabindex="-1"><span class="label">Demo confirmation</span><h2>Thank you, <span id="n"></span>.</h2><p>This is a demonstration. No real table has been booked and nothing was sent.</p><p class="demo" id="ref"></p><button class="btn" id="rs" style="background:none;color:inherit;cursor:pointer">Reset</button></div></main>
+<script>
+const f=document.getElementById('f'),ok=document.getElementById('ok'),s=f.querySelector('.slots'),h=f.time;
+s.innerHTML=['17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00'].map(t=>`<button type="button" aria-pressed="false">${t}</button>`).join('');
+s.onclick=e=>{if(e.target.tagName!=='BUTTON')return;h.value=e.target.textContent;s.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===e.target))};
+f.date.min=new Date().toISOString().slice(0,10);
+function bad(el,m){const e=el.closest('label,div').querySelector('.err');e.textContent=m;if(el.type!=='hidden')el.setAttribute('aria-invalid',!!m);return !!m}
+f.onsubmit=e=>{e.preventDefault();let x=0;
+x|=bad(f.date,!f.date.value||f.date.value<f.date.min?'Choose a future date.':'');
+x|=bad(h,h.value?'':'Select a time.');
+x|=bad(f.guests,f.guests.value?'':'Select party size.');
+x|=bad(f.name,f.name.value.trim().length<2?'Enter your name.':'');
+x|=bad(f.email,/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email.value)?'':'Enter a valid email.');
+if(x){f.querySelector('[aria-invalid=true]')?.focus();return}
+document.getElementById('n').textContent=f.name.value.trim();
+document.getElementById('ref').textContent='Demo ref: MV-DEMO-'+Math.random().toString(36).slice(2,8).toUpperCase()+' · '+f.date.value+' '+h.value+' · '+f.guests.value+' guests';
+f.hidden=false;f.style.display='none';ok.hidden=false;ok.focus()};
+document.getElementById('rs').onclick=()=>{f.reset();h.value='';s.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',false));f.style.display='';ok.hidden=true};
+</script><script src="../js/shared.js"></script></body></html>

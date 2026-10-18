@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Menu — MAISON VANTA</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;1,500&family=DM+Sans:wght@400;500&family=DM+Mono&display=swap" rel="stylesheet"><link rel="stylesheet" href="../css/styles.css">
+<style>@media print{nav,footer,.tabs,.demo{display:none}body{background:#fff;color:#000}}</style></head>
+<body data-root="../"><main class="page parch" style="padding:16vh 5vw 10vh"><span class="label">Autumn menu · Seasonal</span><h1>The Menu</h1>
+<p class="demo" style="color:var(--burnt);border-color:var(--burnt)">Illustrative sample dishes and prices for a fictional restaurant.</p>
+<div class="tabs" role="group" aria-label="Menu categories"></div><div id="list" aria-live="polite"></div>
+<p style="margin-top:2rem"><button class="btn" onclick="print()" style="background:none;color:inherit;border-color:currentColor;cursor:pointer">Print menu</button></p></main>
+<script src="../js/data.js"></script><script>
+const C={all:'All',tasting:'Tasting',alacarte:'À la carte',vegetarian:'Vegetarian',dessert:'Dessert'};
+const t=document.querySelector('.tabs'),l=document.getElementById('list');
+function show(k){t.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===k));
+l.innerHTML=DISHES.filter(d=>k==='all'||d.cat===k).map(d=>`<a class="dish" href="dish-detail.html?dish=${d.id}" style="text-decoration:none"><div><h3>${d.name}<span class="tag">${d.tag}</span></h3><em>${d.desc}</em></div><b>$${d.price}</b></a>`).join('')}
+t.innerHTML=Object.entries(C).map(([k,v])=>`<button data-k="${k}" aria-pressed="false">${v}</button>`).join('');
+t.onclick=e=>{if(e.target.dataset.k)show(e.target.dataset.k)};show('all');
+</script><script src="../js/shared.js"></script></body></html>

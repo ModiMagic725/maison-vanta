@@ -1,0 +1,18 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dish — MAISON VANTA</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;1,500&family=DM+Sans:wght@400;500&family=DM+Mono&display=swap" rel="stylesheet"><link rel="stylesheet" href="../css/styles.css">
+<style>.hero2{height:80svh;position:relative}.hero2 img{width:100%;height:100%;cursor:zoom-in}.hero2::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,var(--ink),transparent 60%);pointer-events:none}.hero2 div{position:absolute;bottom:5vh;left:5vw;z-index:2}ul.ing{list-style:none;padding:0}ul.ing li{border-bottom:1px solid #0003;padding:.6rem 0;font:.85rem var(--mono)}.rel{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}.rel img{aspect-ratio:4/5;width:100%}.rel h3{font-size:1.6rem;margin-top:.6rem}@media(max-width:800px){.rel{grid-template-columns:1fr}}</style></head>
+<body data-root="../"><main id="m"></main>
+<script src="../js/data.js"></script><script>
+const id=new URLSearchParams(location.search).get('dish');const d=DISHES.find(x=>x.id===id)||DISHES[0];
+document.title=d.name+' — MAISON VANTA';
+const rel=DISHES.filter(x=>x.id!==d.id&&x.cat===d.cat).concat(DISHES.filter(x=>x.cat!==d.cat)).slice(0,3);
+document.getElementById('m').innerHTML=`<div class="hero2"><img src="${imgOf(d)}" data-zoom alt="${d.name}: ${d.desc}" fetchpriority="high"><div><span class="label">Signature dish · Sample menu item</span><h1>${d.name}</h1></div></div>
+<section class="parch"><div class="split"><div><span class="label">The story</span><h2 style="margin:1rem 0">${d.desc}</h2><p>${d.story}</p><p style="margin-top:1.5rem"><em>Chef's note: “${d.note}”</em></p></div>
+<div><span class="label">Ingredients</span><ul class="ing">${d.ing.map(i=>'<li>'+i+'</li>').join('')}</ul><p style="margin-top:1.5rem"><span class="label">Flavor profile</span><br>${d.flavor}</p><p style="margin-top:1rem"><span class="label">Suggested pairing</span><br>${d.pair}</p><p style="margin-top:1rem"><b style="font-family:var(--mono)">$${d.price}</b> <small>sample price</small></p></div></div></section>
+<section><span class="label">Also on the menu</span><div class="rel" style="margin-top:2rem">${rel.map(r=>`<a href="dish-detail.html?dish=${r.id}" style="text-decoration:none"><img loading="lazy" src="${imgOf(r)}" alt="${r.name}"><h3>${r.name}</h3><small class="label">${r.desc}</small></a>`).join('')}</div>
+<p style="margin-top:3rem"><a class="btn" href="menu.html">← Return to Menu</a> <a class="btn fill" href="reservations.html">Reserve (demo)</a></p></section>`;
+if(window.gsap&&!matchMedia('(prefers-reduced-motion:reduce)').matches){}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>if(window.gsap&&!matchMedia('(prefers-reduced-motion:reduce)').matches){gsap.from('.hero2 img',{scale:1.25,duration:2.2,ease:'power3.out'});gsap.from('.hero2 h1',{y:60,opacity:0,duration:1.2,delay:.4})}</script>
+<script src="../js/shared.js"></script></body></html>
